@@ -18,5 +18,8 @@ if (process.argv.length > 2) {
     mongoose.connection.close();
     queryFirestore();
   } else if (sizeFlag) queryMongo(size);
-  else console.log("Command does not exist");
+  else {
+    mongoose.connection.close();
+    console.log("Command does not exist");
+  }
 } else queryMongo();
