@@ -3,16 +3,20 @@ import { queryFirestore } from "./queries/queryFirebase";
 import { queryMongo } from "./queries/queryMongo";
 
 if (process.argv.length > 2) {
+  const command = process.argv.join(" ");
   let size = 1000;
-  if (process.argv.length == 4) size = Number(process.argv[3]);
+  let sizeFlag = command.match(/\s*-{2}size\s*\d+/g);
+  if (sizeFlag) {
+    size = Number(sizeFlag[0].trim().split(" ")[1]);
+  }
 
-  const db = process.argv[2];
-  if (db.toLowerCase() === "mongo") queryMongo(size);
+  if (command.match(/\s*-{2}mongo\s*/g)) queryMongo(size);
   else if (
-    db.toLowerCase() === "firebase" ||
-    db.toLowerCase() === "firestore"
+    command.match(/\s*-{2}firebase\s*/g) ||
+    command.match(/\s*-{2}firestore\s*/g)
   ) {
     mongoose.connection.close();
     queryFirestore();
-  } else console.log("Command does not exist");
+  } else if (sizeFlag) queryMongo(size);
+  else console.log("Command does not exist");
 } else queryMongo();
