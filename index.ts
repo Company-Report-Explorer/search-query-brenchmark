@@ -16,7 +16,7 @@ if (process.argv.length > 2) {
     command.match(/\s*-{2}firestore\s*/g)
   ) {
     mongoose.connection.close();
-    queryFirestore();
+    queryFirestore(size);
   } else if (sizeFlag) queryMongo(size);
   else {
     mongoose.connection.close();

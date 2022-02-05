@@ -5,7 +5,7 @@ import {
 } from "../connections/mongo";
 import mongoose from "mongoose";
 
-export async function queryMongo(size: number = 1000) {
+export async function queryMongo(size: number = 5) {
   await queryDefaultMongo(size);
   await queryPackedMongo(size);
   mongoose.connection.close();
@@ -14,14 +14,16 @@ export async function queryMongo(size: number = 1000) {
 async function queryDefaultMongo(size: number) {
   const before = Date.now();
 
-  let bookIDs: string[] = [];
+  let reviewIDs: string[] = [];
   for (let i = 0; i < size; i++)
-    bookIDs.push((await defaultTokensCollection.findById(`token${i}`)).bookID);
-  bookIDs = Array.from(new Set(bookIDs));
+    reviewIDs.push(
+      (await defaultTokensCollection.findById(`token${i}`)).bookID
+    );
+  reviewIDs = Array.from(new Set(reviewIDs));
 
-  const books = [];
-  for (let i = 0; i < bookIDs.length; i++)
-    books.push(await defaultBooksCollection.findById(bookIDs[i]));
+  const reviews = [];
+  for (let i = 0; i < reviewIDs.length; i++)
+    reviews.push(await defaultBooksCollection.findById(reviewIDs[i]));
 
   const after = Date.now();
   console.log("Default MongoDB Query Time:", after - before);
@@ -30,9 +32,9 @@ async function queryDefaultMongo(size: number) {
 async function queryPackedMongo(size: number) {
   const before = Date.now();
 
-  let books: string[] = [];
+  let reviews: string[] = [];
   for (let i = 0; i < size; i++)
-    books.push((await packedTokensCollection.findById(`token${i}`)).book);
+    reviews.push((await packedTokensCollection.findById(`token${i}`)).book);
 
   const after = Date.now();
   console.log("Packed MongoDB Query Time:", after - before);

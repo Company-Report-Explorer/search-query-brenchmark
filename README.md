@@ -1,4 +1,4 @@
-# search-query-brenchmark
+# search-query-benchmark
 
 ## Install dependencies
 
@@ -9,7 +9,7 @@ yarn install
 ## Generate dummy data
 
 ```
-yarn gen <mongo | firebase>
+yarn gen <--mongo (default) | --firebase>
 ```
 
 ## Test query time
@@ -19,8 +19,8 @@ yarn start <options>
 ```
 
 - `--mongo` to query with MongoDB (default)
-- `--firebase` or `--firestore` to query with Firestore (not done yet)
-- `--size` followed by a number to set the size of the query (1000 as default)
+- `--firebase` or `--firestore` to query with Firestore
+- `--size` followed by a number to set the size of the query (5 as default)
 
 e.g.
 

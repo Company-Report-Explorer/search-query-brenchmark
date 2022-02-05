@@ -16,11 +16,11 @@ async function generateFirestore() {
     return;
   }
 
-  console.log("Start Generating...");
+  console.log("Start Generating `default-tokens`...");
 
-  for (let i = 0; i < 10000; i++) {
-    await setDoc(doc(firestore, "default-tokens", `tokens${i}`), {
-      bookID: Math.floor(Math.random() * 500),
+  for (let i = 0; i < 1000; i++) {
+    await setDoc(doc(firestore, "default-tokens", `token${i}`), {
+      reviewID: `review${Math.floor(Math.random() * 500)}`,
       count: Math.floor(Math.random() * 300 + 5),
       positions: new Array(Math.floor(Math.random() * 10 + 1))
         .fill(0)
@@ -28,14 +28,39 @@ async function generateFirestore() {
     });
   }
 
+  console.log("Finished Generating `default-tokens`");
+  console.log("Start Generating `default-reviews`...");
+
   for (let i = 0; i < 500; i++) {
-    await setDoc(doc(firestore, "default-books", `book${i}`), {
+    await setDoc(doc(firestore, "default-books", `review${i}`), {
+      bookID: `book${Math.floor(Math.random() * 500)}`,
       totalWords: Math.floor(Math.random() * 100000 + 10000),
       rating: Math.random() * 5,
     });
   }
 
+  console.log("Finished Generating `default-reviews`");
+  console.log("Start Generating `packed-tokens`...");
+
+  for (let i = 0; i < 1000; i++) {
+    await setDoc(doc(firestore, "packed-tokens", `token${i}`), {
+      review: {
+        bookID: `book${Math.floor(Math.random() * 500)}`,
+        totalWords: Math.floor(Math.random() * 100000 + 10000),
+        rating: Math.random() * 5,
+        reviewID: `review${Math.floor(Math.random() * 500)}`,
+      },
+      count: Math.floor(Math.random() * 300 + 5),
+      positions: new Array(Math.floor(Math.random() * 10 + 1))
+        .fill(0)
+        .map(() => Math.floor(Math.random() * 300 + 5)),
+    });
+  }
+
+  console.log("Finished Generating `packed-books`");
+
   deleteApp(firebaseApp);
+  console.log("Done.");
 }
 
 async function firestoreGuard() {
@@ -46,10 +71,10 @@ async function firestoreGuard() {
 async function generateMongo() {
   console.log("Start Generating `default-tokens`...");
 
-  for (let i = 0; i < 100000; i++) {
+  for (let i = 0; i < 1000; i++) {
     const t = new defaultTokensCollection({
       _id: `token${i}`,
-      bookID: `book${Math.floor(Math.random() * 500)}`,
+      bookID: `review${Math.floor(Math.random() * 500)}`,
       count: Math.floor(Math.random() * 300 + 5),
       positions: new Array(Math.floor(Math.random() * 10 + 1))
         .fill(0)
@@ -60,11 +85,11 @@ async function generateMongo() {
   }
 
   console.log("Finished Generating `default-tokens`");
-  console.log("Start Generating `default-books`...");
+  console.log("Start Generating `default-reviews`...");
 
   for (let i = 0; i < 500; i++) {
     const b = new defaultBooksCollection({
-      _id: `book${i}`,
+      _id: `review${i}`,
       totalWords: Math.floor(Math.random() * 100000 + 10000),
       rating: Math.random() * 5,
     });
@@ -72,16 +97,17 @@ async function generateMongo() {
     await b.save();
   }
 
-  console.log("Finished Generating `default-books`");
+  console.log("Finished Generating `default-reviews`");
   console.log("Start Generating `packed-tokens`...");
 
-  for (let i = 0; i < 100000; i++) {
+  for (let i = 0; i < 1000; i++) {
     const t = new packedTokensCollection({
       _id: `token${i}`,
-      book: {
+      review: {
         bookID: `book${Math.floor(Math.random() * 500)}`,
         totalWords: Math.floor(Math.random() * 100000 + 10000),
         rating: Math.random() * 5,
+        reviewID: `review${Math.floor(Math.random() * 500)}`,
       },
       count: Math.floor(Math.random() * 300 + 5),
       positions: new Array(Math.floor(Math.random() * 10 + 1))
@@ -99,13 +125,13 @@ async function generateMongo() {
 }
 
 if (process.argv.length > 2) {
-  const db = process.argv[2];
-  if (db.toLowerCase() === "mongo") {
+  const command = process.argv.join(" ");
+  if (command.match(/\s*-{2}mongo\s*/g)) {
     deleteApp(firebaseApp);
     generateMongo();
   } else if (
-    db.toLowerCase() === "firebase" ||
-    db.toLowerCase() === "firestore"
+    command.match(/\s*-{2}firebase\s*/g) ||
+    command.match(/\s*-{2}firestore\s*/g)
   ) {
     mongoose.connection.close();
     generateFirestore();
