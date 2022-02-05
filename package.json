@@ -1,16 +1,13 @@
 {
   "name": "search-query-brenchmark",
   "version": "1.0.0",
-  "main": "index.ts",
-  "repository": "(placeholder)",
   "author": "wchr-aun",
   "license": "MIT",
   "dependencies": {
     "@types/node": "^17.0.14",
     "dotenv": "^16.0.0",
     "firebase": "9.4.1",
-    "mongoose": "^6.2.0",
-    "random-words": "^1.1.2"
+    "mongoose": "^6.2.0"
   },
   "scripts": {
     "start": "ts-node index.ts",
@@ -18,7 +15,6 @@
     "commit": "cz"
   },
   "devDependencies": {
-    "@types/random-words": "^1.1.2",
     "cz-conventional-changelog": "3.3.0",
     "cz-emoji": "^1.3.1",
     "ts-node": "^10.4.0",

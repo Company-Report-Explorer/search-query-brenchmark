@@ -3,13 +3,14 @@ import { doc, getDoc } from "firebase/firestore";
 import { firebaseApp, firestore } from "../connections/firebase";
 
 export async function queryFirestore() {
-  console.time("Firestore Query Time:");
+  const before = Date.now();
 
   await getDoc(doc(firestore, "default-tokens", "able"));
   await getDoc(doc(firestore, "default-tokens", "ability"));
   await getDoc(doc(firestore, "default-tokens", "about"));
 
-  console.timeEnd("Firestore Query Time:");
+  const after = Date.now();
+  console.log("Firestore Query Time:", after - before);
 
   deleteApp(firebaseApp);
 }

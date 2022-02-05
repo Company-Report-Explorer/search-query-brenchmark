@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 dotenv.config();
-mongoose.connect(`${process.env.MONGO_DB_URL}/brenchmark`);
+mongoose.connect(`${process.env.MONGO_DB_URL}`);
 
 const defaultTokenSchema = new mongoose.Schema({
   _id: String,

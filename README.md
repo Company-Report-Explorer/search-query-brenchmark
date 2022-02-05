@@ -18,11 +18,9 @@ yarn gen <mongo | firebase>
 yarn start <options>
 ```
 
-`--mongo` to query with MongoDB (default)
-
-`--firebase` or `--firestore` to query with Firestore (not done yet)
-
-`--size` followed by a number to set the size of the query (1000 as default)
+- `--mongo` to query with MongoDB (default)
+- `--firebase` or `--firestore` to query with Firestore (not done yet)
+- `--size` followed by a number to set the size of the query (1000 as default)
 
 e.g.
 
@@ -46,5 +44,5 @@ projectId=YOUR_FIREBASE_PROJECT_ID,
 Create a `.env` file with the mongodb url, for example:
 
 ```
-MONGO_DB_URL=mongodb://localhost:27017
+MONGO_DB_URL=mongodb://localhost:27017/brenchmark
 ```

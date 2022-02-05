@@ -12,26 +12,28 @@ export async function queryMongo(size: number = 1000) {
 }
 
 async function queryDefaultMongo(size: number) {
-  console.time("Default MongoDB Query Time:");
+  const before = Date.now();
 
   let bookIDs: string[] = [];
   for (let i = 0; i < size; i++)
     bookIDs.push((await defaultTokensCollection.findById(`token${i}`)).bookID);
   bookIDs = Array.from(new Set(bookIDs));
-  // console.log(bookIDs);
+
   const books = [];
   for (let i = 0; i < bookIDs.length; i++)
     books.push(await defaultBooksCollection.findById(bookIDs[i]));
-  // console.log(books);
-  console.timeEnd("Default MongoDB Query Time:");
+
+  const after = Date.now();
+  console.log("Default MongoDB Query Time:", after - before);
 }
 
 async function queryPackedMongo(size: number) {
-  console.time("Packed MongoDB Query Time:");
+  const before = Date.now();
 
-  let bookIDs: string[] = [];
+  let books: string[] = [];
   for (let i = 0; i < size; i++)
-    bookIDs.push((await packedTokensCollection.findById(`token${i}`)).bookID);
+    books.push((await packedTokensCollection.findById(`token${i}`)).book);
 
-  console.timeEnd("Packed MongoDB Query Time:");
+  const after = Date.now();
+  console.log("Packed MongoDB Query Time:", after - before);
 }
