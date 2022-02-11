@@ -10,9 +10,10 @@
     "mongoose": "^6.2.0"
   },
   "scripts": {
-    "start": "ts-node index.ts",
-    "gen": "ts-node generate.ts",
-    "commit": "cz"
+    "start": "ts-node ./index.ts",
+    "gen": "ts-node ./generate/index.ts",
+    "commit": "cz",
+    "export-doc": "ts-node ./export-doc.ts"
   },
   "devDependencies": {
     "cz-conventional-changelog": "3.3.0",
